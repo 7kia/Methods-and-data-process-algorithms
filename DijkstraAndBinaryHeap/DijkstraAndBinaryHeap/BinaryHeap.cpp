@@ -2,9 +2,9 @@
 #include "BinaryHeap.h"
 
 using namespace std;
-BinaryHeap::BinaryHeap()
+BinaryHeap::BinaryHeap(const size_t size)
 {
-	heapContent = vector<int>(this->SIZE);
+	heapContent = vector<int>(size);
 	heapSize = 0;
 }
 
@@ -39,10 +39,10 @@ string BinaryHeap::printAsHeap()
 	int k = 1;
 	while (i < heapSize) {
 		while ((i < k) && (i < heapSize)) {
-			result += heapContent[i] + "» «";
+			result.append(std::to_string(heapContent[i]) + " ");
 			i++;
 		}
-		result += "\n";
+		result.append("\n");
 		k = k * 2 + 1;
 	}
 
@@ -52,9 +52,11 @@ string BinaryHeap::printAsHeap()
 string BinaryHeap::printAsArray()
 {
 	string result = "";
-	for (int i = 0; i < heapSize; i++) {
-		result += heapContent[i] + "» «";
+	for each (int var in heapContent)
+	{
+		result.append(std::to_string(var) + " ");
 	}
+
 	result += "\n";
 	return result;
 }
