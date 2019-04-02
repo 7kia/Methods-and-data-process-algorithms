@@ -31,11 +31,18 @@ struct DataForPath
 class Dijkstra 
 {
 public:
-	static std::string findMinPath(const size_t from, const size_t to, const MyGraph graph);
+	std::string findMinPath(const size_t from, const size_t to, const MyGraph graph);
 	static DataForPath recoveryPath(
 		const MyGraph& graph,
 		const std::vector<size_t>& minDistance,
 		const size_t from,
 		const size_t to
 	);
+private:
+	void updateMinDistanceForVertexes(const size_t size, size_t & min, size_t & minIndex);
+	void initVertexesAndDistances(const size_t from, const size_t size);
+	void findMinDistanceFromVertex(size_t & min, size_t & minIndex, const MyGraph graph);
+private:
+	std::vector<size_t> m_minDistance;
+	std::vector<bool> m_markedVertexes;
 };

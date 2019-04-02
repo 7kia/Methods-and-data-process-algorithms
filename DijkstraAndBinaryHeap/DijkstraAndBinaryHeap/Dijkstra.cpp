@@ -10,54 +10,69 @@ string Dijkstra::findMinPath(
 )
 {
 	const size_t size = graph.m_transitionMatrix.size();
-	vector<size_t> minDistance = vector<size_t>(size); // минимальное рассто€ние
-	vector<size_t> markedVertexes = vector<size_t>(size);// посещенные вершины
+	m_minDistance = vector<size_t>(size);
+	m_markedVertexes = vector<bool>(size);
+	
+	initVertexesAndDistances(from, size);
+
 	size_t minIndex;
 	size_t min;
-	
-	//»нициализаци€ вершин и рассто€ний
-	for (size_t i = 0; i < size; i++)
+	do 
 	{
-		minDistance[i] = numeric_limits<size_t>::max();
-		markedVertexes[i] = 1;
-	}
-	minDistance[from] = 0;
-
-	size_t temp;
-	// Ўаг алгоритма
-	do {
 		minIndex = numeric_limits<size_t>::max();;
 		min = numeric_limits<size_t>::max();;
-		for (int i = 0; i < size; i++)
-		{ // ≈сли вершину ещЄ не обошли и вес меньше min
-			if ((markedVertexes[i] == 1) && (minDistance[i] < min))
-			{ // ѕереприсваиваем значени€
-				min = minDistance[i];
-				minIndex = i;
-			}
-		}
-		// ƒобавл€ем найденный минимальный вес
-		// к текущему весу вершины
-		// и сравниваем с текущим минимальным весом вершины
+
+		updateMinDistanceForVertexes(size, min, minIndex);
 		if (minIndex != numeric_limits<size_t>::max())
 		{
-			for (int i = 0; i < size; i++)
-			{
-				if (graph.m_transitionMatrix[minIndex][i] > 0)
-				{
-					temp = min + graph.m_transitionMatrix[minIndex][i];
-					if (temp < minDistance[i])
-					{
-						minDistance[i] = temp;
-					}
-				}
-			}
-			markedVertexes[minIndex] = 0;
+			findMinDistanceFromVertex(min, minIndex, graph);
+			m_markedVertexes[minIndex] = true;
 		}
-	} while (minIndex < numeric_limits<size_t>::max());
+	} 
+	while (minIndex < numeric_limits<size_t>::max());
 
-	DataForPath data = recoveryPath(graph, minDistance, from, to);
+	DataForPath data = recoveryPath(graph, m_minDistance, from, to);
 	return graph.printPath(data);
+}
+
+
+void Dijkstra::updateMinDistanceForVertexes(const size_t size, size_t& min, size_t& minIndex)
+{
+	for (int i = 0; i < size; i++)
+	{
+		if ((m_markedVertexes[i] == false) && (m_minDistance[i] < min))
+		{
+			min = m_minDistance[i];
+			minIndex = i;
+		}
+	}
+}
+
+void Dijkstra::initVertexesAndDistances(const size_t from, const size_t size)
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		m_minDistance[i] = numeric_limits<size_t>::max();
+		m_markedVertexes[i] = false;
+	}
+	m_minDistance[from] = 0;
+}
+
+
+void Dijkstra::findMinDistanceFromVertex(size_t& min, size_t& minIndex, const MyGraph graph)
+{
+	const size_t size = graph.m_transitionMatrix.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (graph.m_transitionMatrix[minIndex][i] > 0)
+		{
+			size_t temp = min + graph.m_transitionMatrix[minIndex][i];
+			if (temp < m_minDistance[i])
+			{
+				m_minDistance[i] = temp;
+			}
+		}
+	}
 }
 
 DataForPath Dijkstra::recoveryPath(
