@@ -35,6 +35,6 @@ int main() {
 	cout << d.findMinPath(0, 5, graph) << endl;
 	cout << d.findMinPath(5, 0, graph) << endl;
 	cout << d.findMinPath(0, 4, graph) << endl;
-	cin.get();
+	return 0;
 }
 

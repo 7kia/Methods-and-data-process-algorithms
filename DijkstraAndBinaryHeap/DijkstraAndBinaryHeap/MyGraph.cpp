@@ -50,7 +50,7 @@ std::string MyGraph::printPath(const DataForPath data) const
 	const size_t previousVertexIndex = data.previousVertexIndex;
 	const size_t minDistance = data.minDistance;
 
-	string result = "Path from " + to_string(data.from) + " to " + to_string(data.to) + "; ";
+	string result = "Path from " + to_string(data.from + 1) + " to " + to_string(data.to + 1) + "; ";
 	for (int i = static_cast<int>(previousVertexIndex - 1); i >= 0; i--)
 	{
 		result.append(to_string(vertexes[i]));
