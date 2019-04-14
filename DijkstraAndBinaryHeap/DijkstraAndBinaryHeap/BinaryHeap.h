@@ -17,10 +17,10 @@ public:
 public:
 	BinaryHeap(const size_t size);
 	~BinaryHeap();
-	void addelem(const int element);  // добавление элемента кучи
+	void addElement(const int element);  // добавление элемента кучи
 	std::string printAsHeap();  // вывод элементов кучи в форме кучи
 	std::string printAsArray();  // вывод элементов кучи в форме массива
-	int getmax();  // удаление вершины (максимального элемента)
+	int getMin();  // удаление вершины (максимального элемента)
 	void seed(const int elementIndex);
 
 private:

@@ -13,17 +13,15 @@ BinaryHeap::~BinaryHeap()
 {
 }
 
-void BinaryHeap::addelem(const int element)
+void BinaryHeap::addElement(const int element)
 {
-	int i, parent;
+	size_t i;
+	size_t parent;
 	i = heapSize;
 	heapContent[i] = element;
 	parent = (i - 1) / 2;
 	while (parent >= 0 && i > 0) {
-		if (heapContent[i] > heapContent[parent]) {
-			//int temp = heapContent[i];
-			//heapContent[i] = heapContent[parent];
-			//heapContent[parent] = temp;
+		if (heapContent[i] < heapContent[parent]) {
 			swap(heapContent[i], heapContent[parent]);
 		}
 		i = parent;
@@ -61,48 +59,29 @@ string BinaryHeap::printAsArray()
 	return result;
 }
 
-int BinaryHeap::getmax()
+int BinaryHeap::getMin()
 {
 	int max = heapContent[0];
 	heapContent[0] = heapContent[heapSize - 1];
 	heapSize--;
 	seed(0);
-	return(max);
+	return max;
 }
 
 void BinaryHeap::seed(const int elementIndex)
 {
-	int left, right;
-	int temp;
+	int left;
+	int right;
 	left = 2 * elementIndex + 1;
 	right = 2 * elementIndex + 2;
 	swapAndSeedNext(elementIndex, left);
 	swapAndSeedNext(elementIndex, right);
-	//if (left < HeapSize) {
-	//	if (h[elementIndex] < h[left]) {
-	//		temp = h[elementIndex];
-	//		h[elementIndex] = h[left];
-	//		h[left] = temp;
-	//		seed(left);
-	//	}
-	//}
-	//if (right < HeapSize) {
-	//	if (h[elementIndex] < h[right]) {
-	//		temp = h[elementIndex];
-	//		h[elementIndex] = h[right];
-	//		h[right] = temp;
-	//		seed(right);
-	//	}
-	//}
 }
 
 void BinaryHeap::swapAndSeedNext(const int elementIndex, const int swapElement)
 {
 	if (swapElement < heapSize) {
-		if (heapContent[elementIndex] < heapContent[swapElement]) {
-			//temp = h[elementIndex];
-			//h[elementIndex] = h[swapElement];
-			//h[swapElement] = temp;
+		if (heapContent[elementIndex] > heapContent[swapElement]) {
 			std::swap(heapContent[elementIndex], heapContent[swapElement]);
 			seed(swapElement);
 		}

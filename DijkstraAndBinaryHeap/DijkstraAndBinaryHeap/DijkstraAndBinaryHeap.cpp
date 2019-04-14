@@ -35,6 +35,32 @@ int main() {
 	cout << d.findMinPath(0, 5, graph) << endl;
 	cout << d.findMinPath(5, 0, graph) << endl;
 	cout << d.findMinPath(0, 4, graph) << endl;
+
+	////////////////////////////////////////////////
+	BinaryHeap heap = BinaryHeap(4);
+	heap.addElement(2);
+	cout << heap.printAsHeap() << endl;
+
+	heap.addElement(3);
+	cout << heap.printAsHeap() << endl;
+
+	heap.addElement(4);
+	cout << heap.printAsHeap() << endl;
+
+	heap.addElement(1);
+	cout << heap.printAsHeap() << endl;
+
+	cout << "Get min" << heap.getMin() << endl;
+	cout << heap.printAsHeap() << endl;
+
+	cout << "Get min" << heap.getMin() << endl;
+	cout << heap.printAsHeap() << endl;
+
+	cout << "Get min" << heap.getMin() << endl;
+	cout << heap.printAsHeap() << endl;
+
+	cout << "Get min" << heap.getMin() << endl;
+	cout << heap.printAsHeap() << endl;
 	return 0;
 }
 
