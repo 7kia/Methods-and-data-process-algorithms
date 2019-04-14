@@ -37,30 +37,25 @@ int main() {
 	cout << d.findMinPath(0, 4, graph) << endl;
 
 	////////////////////////////////////////////////
-	BinaryHeap heap = BinaryHeap(4);
-	heap.addElement(2);
-	cout << heap.printAsHeap() << endl;
-
+	// ≈сть подозрени€ что элементы могут выстроитьс€ в дереве не так как нужно
+	BinaryHeap heap = BinaryHeap();
 	heap.addElement(3);
-	cout << heap.printAsHeap() << endl;
-
+	heap.addElement(6);
 	heap.addElement(4);
+	heap.addElement(8);
+	heap.addElement(9);
+	heap.addElement(12);
+	heap.addElement(7);
+	heap.addElement(11);
+	heap.addElement(9);
 	cout << heap.printAsHeap() << endl;
 
-	heap.addElement(1);
-	cout << heap.printAsHeap() << endl;
+	for (size_t i = 0; i < 9; i++)
+	{
+		cout << "Get min" << heap.getAndDeleteMin() << endl;
+		cout << heap.printAsHeap() << endl;
+	}
 
-	cout << "Get min" << heap.getMin() << endl;
-	cout << heap.printAsHeap() << endl;
-
-	cout << "Get min" << heap.getMin() << endl;
-	cout << heap.printAsHeap() << endl;
-
-	cout << "Get min" << heap.getMin() << endl;
-	cout << heap.printAsHeap() << endl;
-
-	cout << "Get min" << heap.getMin() << endl;
-	cout << heap.printAsHeap() << endl;
 	return 0;
 }
 
