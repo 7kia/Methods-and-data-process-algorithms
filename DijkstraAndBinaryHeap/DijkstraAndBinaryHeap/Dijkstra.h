@@ -28,6 +28,19 @@ struct DataForPath
 	size_t to;
 };
 
+struct VertexDistance
+{
+	VertexDistance(const size_t index, const size_t distance)
+	{
+		this->index = index;
+		this->distance = distance;
+	}
+	size_t index;
+	size_t distance;
+};
+bool operator<(const VertexDistance& first, const VertexDistance& second);
+bool operator<=(const VertexDistance& first, const VertexDistance& second);
+
 class Dijkstra 
 {
 public:

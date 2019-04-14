@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Dijkstra.h"
+#include "BinaryHeap.h"
 
 using namespace std;
 
@@ -38,13 +39,18 @@ string Dijkstra::findMinPath(
 
 void Dijkstra::updateMinDistanceForVertexes(const size_t size, size_t& min, size_t& minIndex)
 {
+	BinaryHeap<VertexDistance> heap = BinaryHeap<VertexDistance>();
 	for (int i = 0; i < size; i++)
 	{
-		if ((m_markedVertexes[i] == false) && (m_minDistance[i] < min))
+		if (!m_markedVertexes[i])
 		{
-			min = m_minDistance[i];
-			minIndex = i;
+			heap.addElement(VertexDistance(i, m_minDistance[i]));
 		}
+	}
+	if (heap.heapContent.size() > 0) {
+		VertexDistance minVertex = heap.getAndDeleteMin();
+		min = minVertex.distance;
+		minIndex = minVertex.index;
 	}
 }
 
@@ -84,23 +90,25 @@ DataForPath Dijkstra::recoveryPath(
 {
 	const size_t size = graph.m_transitionMatrix.size();
 
-	vector<size_t> vertexes = vector<size_t>(size); // массив посещенных вершин
-	size_t endVertexIndex = to; // индекс конечной вершины = 5 - 1
-	vertexes[0] = endVertexIndex + 1; // индекс + 1 = номер вершины(номер от 1)
-	size_t previousVertexIndex = 1; // индекс предыдущей вершины
-	size_t weight = minDistance[endVertexIndex]; // вес конечной вершины
+	vector<size_t> visitedVertexes = vector<size_t>(size);
+	size_t endVertexIndex = to;
+	visitedVertexes[0] = endVertexIndex + 1; // индекс + 1 = номер вершины(отсчёт с 1)
+	size_t previousVertexIndex = 1;
+	size_t endVertexWeight = minDistance[endVertexIndex];
 
-	while (endVertexIndex != from) // пока не дошли до начальной вершины
+	while (endVertexIndex != from)
 	{
-		for (int i = 0; i < size; i++) { // просматриваем все вершины
-			if (graph.m_transitionMatrix[endVertexIndex][i] != 0)   // если связь есть
+		for (int i = 0; i < size; i++) {
+			bool existTransition = graph.m_transitionMatrix[endVertexIndex][i] != 0;
+			if (existTransition)
 			{
-				size_t temp = weight - graph.m_transitionMatrix[endVertexIndex][i]; // определяем вес пути из предыдущей вершины
-				if (temp == minDistance[i]) // если вес совпал с рассчитанным
-				{                 // значит из этой вершины и был переход
-					weight = temp; // сохраняем новый вес
-					endVertexIndex = i;       // сохраняем предыдущую вершину
-					vertexes[previousVertexIndex] = i + 1; // и записываем ее в массив
+				size_t temp = endVertexWeight - graph.m_transitionMatrix[endVertexIndex][i]; // определяем вес пути из предыдущей вершины
+				bool transitionFromTheVertex = (temp == minDistance[i]);
+				if (transitionFromTheVertex) 
+				{
+					endVertexWeight = temp;
+					endVertexIndex = i;
+					visitedVertexes[previousVertexIndex] = i + 1;
 					previousVertexIndex++;
 				}
 			}
@@ -109,9 +117,19 @@ DataForPath Dijkstra::recoveryPath(
 
 	return DataForPath(
 		previousVertexIndex, 
-		vertexes,
+		visitedVertexes,
 		minDistance[to], 
 		from, 
 		to
 	);
+}
+
+bool operator<(const VertexDistance& first, const VertexDistance& second)
+{
+	return first.distance < second.distance;
+}
+
+bool operator<=(const VertexDistance& first, const VertexDistance& second)
+{
+	return first.distance <= second.distance;
 }

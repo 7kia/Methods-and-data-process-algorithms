@@ -15,6 +15,7 @@ using namespace std;
 const int INF = 1000000000;
 
 int main() {
+	// Граф взят отсюда https://prog-cpp.ru/deikstra/
 	setlocale(LC_ALL, "Russian");
 	const size_t SIZE = 6;
 
@@ -38,7 +39,7 @@ int main() {
 
 	////////////////////////////////////////////////
 	// Есть подозрения что элементы могут выстроиться в дереве не так как нужно
-	BinaryHeap heap = BinaryHeap();
+	BinaryHeap<int> heap = BinaryHeap<int>();
 	heap.addElement(3);
 	heap.addElement(6);
 	heap.addElement(4);
@@ -48,13 +49,16 @@ int main() {
 	heap.addElement(7);
 	heap.addElement(11);
 	heap.addElement(9);
-	cout << heap.printAsHeap() << endl;
+	cout << printAsHeap(heap.heapContent) << endl;
 
 	for (size_t i = 0; i < 9; i++)
 	{
 		cout << "Get min" << heap.getAndDeleteMin() << endl;
-		cout << heap.printAsHeap() << endl;
+		cout << printAsHeap(heap.heapContent) << endl;
 	}
+
+	cout << "Test binary heap with pairs<distance, index>" << endl;
+
 
 	return 0;
 }
