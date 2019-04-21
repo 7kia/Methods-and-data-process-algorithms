@@ -70,5 +70,20 @@ public:
 		siftDown(0);
 		return min;
 	}
+
+	void replaceElement(const size_t index, const size_t value) {
+		const size_t oldValue = heapContent[index];
+		heapContent[index] = static_cast<int>(value);
+		int heapElementIndex = static_cast<int>(index - 1) / 2;
+		if (heapElementIndex < 0) {
+			heapElementIndex = 0;
+		}
+		if (oldValue < value) {
+			siftDown(index);//+
+		}
+		else {
+			siftUp(index);
+		}
+	}
 };
 

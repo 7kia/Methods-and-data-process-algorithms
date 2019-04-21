@@ -78,6 +78,7 @@ void Dijkstra::findMinDistanceFromVertex(size_t& min, size_t& minIndex, const My
 				m_minDistance[i] = temp;
 			}
 		}
+		// TODO: попробуй здесь заменять элементы кучи на новые
 	}
 }
 
@@ -102,11 +103,11 @@ DataForPath Dijkstra::recoveryPath(
 			bool existTransition = graph.m_transitionMatrix[endVertexIndex][i] != 0;
 			if (existTransition)
 			{
-				size_t temp = endVertexWeight - graph.m_transitionMatrix[endVertexIndex][i]; // определяем вес пути из предыдущей вершины
-				bool transitionFromTheVertex = (temp == minDistance[i]);
+				size_t weightFromPreviousVertex = endVertexWeight - graph.m_transitionMatrix[endVertexIndex][i];
+				bool transitionFromTheVertex = (weightFromPreviousVertex == minDistance[i]);
 				if (transitionFromTheVertex) 
 				{
-					endVertexWeight = temp;
+					endVertexWeight = weightFromPreviousVertex;
 					endVertexIndex = i;
 					visitedVertexes[previousVertexIndex] = i + 1;
 					previousVertexIndex++;

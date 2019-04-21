@@ -14,6 +14,12 @@ using namespace std;
 
 const int INF = 1000000000;
 
+void testReplace(const size_t index, const size_t value, BinaryHeap<int>& heap) {
+	cout << "Test BinaryHeap.replaceElement param: index=" << index << " value=" << value << endl;
+	heap.replaceElement(index, value);
+	cout << printAsHeap(heap.heapContent) << endl;
+}
+
 int main() {
 	// Граф взят отсюда https://prog-cpp.ru/deikstra/
 	setlocale(LC_ALL, "Russian");
@@ -57,9 +63,36 @@ int main() {
 		cout << printAsHeap(heap.heapContent) << endl;
 	}
 
-	cout << "Test binary heap with pairs<distance, index>" << endl;
+	cout << "Test BinaryHeap.replaceElement" << endl;
+	heap.addElement(3);
+	heap.addElement(6);
+	heap.addElement(4);
 
+	testReplace(0, 4, heap);
+	testReplace(0, 7, heap);
+	testReplace(2, 2, heap);
+	testReplace(1, 21, heap);
 
+	heap.addElement(8);
+	heap.addElement(9);
+	heap.addElement(12);
+	heap.addElement(11);
+	cout << printAsHeap(heap.heapContent) << endl;
+	testReplace(4, 221, heap);
+	testReplace(4, 9, heap);
+
+	testReplace(2, 221, heap);
+	
+	testReplace(2, 4, heap);
+	testReplace(2, 1, heap);
+	testReplace(2, 4, heap);
+	for (size_t i = 0; i < 7; i++)
+	{
+		cout << "Get min" << heap.getAndDeleteMin() << endl;
+		cout << printAsHeap(heap.heapContent) << endl;
+	}
+
+	
 	return 0;
 }
 
