@@ -3,11 +3,6 @@
 #include <vector>
 #include <string>
 
-typedef struct {
-	// int value;
-	int  key;
-} Item;
-
 std::string printAsHeap(std::vector<int> heapContent);
 std::string printAsArray(std::vector<int> heapContent);
 
@@ -71,9 +66,9 @@ public:
 		return min;
 	}
 
-	void replaceElement(const size_t index, const size_t value) {
-		const size_t oldValue = heapContent[index];
-		heapContent[index] = static_cast<int>(value);
+	void replaceElement(const size_t index, const ElemType value) {
+		const ElemType oldValue = heapContent[index];
+		heapContent[index] = value;
 		int heapElementIndex = static_cast<int>(index - 1) / 2;
 		if (heapElementIndex < 0) {
 			heapElementIndex = 0;
@@ -87,3 +82,13 @@ public:
 	}
 };
 
+struct NumberAndHeapIndex
+{
+	size_t nodeNumber;
+	size_t heapIndex;
+};
+class MinDistanceHeap: public BinaryHeap<VertexDistance>
+{
+public:// TODO
+	vector<NumberAndHeapIndex> numberToIndex;
+};

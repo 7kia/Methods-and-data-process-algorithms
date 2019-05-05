@@ -18,15 +18,15 @@ MyGraph::~MyGraph()
 {
 }
 
-void MyGraph::addPath(const size_t from, const size_t to, const size_t disatance)
+void MyGraph::addPath(const size_t from, const size_t to, const size_t distance)
 {
-	m_transitionMatrix[to][from] = disatance;
+	m_transitionMatrix[to][from] = distance;
 }
 
-void MyGraph::addBidirectionalPath(const size_t from, const size_t to, const size_t disatance)
+void MyGraph::addBidirectionalPath(const size_t from, const size_t to, const size_t distance)
 {
-	this->addPath(from, to, disatance);
-	this->addPath(to, from, disatance);
+	this->addPath(from, to, distance);
+	this->addPath(to, from, distance);
 }
 
 std::string MyGraph::print()
@@ -50,7 +50,7 @@ std::string MyGraph::printPath(const DataForPath data) const
 	const size_t previousVertexIndex = data.previousVertexIndex;
 	const size_t minDistance = data.minDistance;
 
-	string result = "Path from " + to_string(data.from + 1) + " to " + to_string(data.to + 1) + "; ";
+	string result = "Path from " + to_string(data.from + 1) + " to " + to_string(data.to + 1) + ";\n";
 	for (int i = static_cast<int>(previousVertexIndex - 1); i >= 0; i--)
 	{
 		result.append(to_string(vertexes[i]));
@@ -60,6 +60,6 @@ std::string MyGraph::printPath(const DataForPath data) const
 		}
 	}
 
-	result.append(" Distance = " + to_string(minDistance));
+	result.append("\nDistance = " + to_string(minDistance));
 	return result;
 }
