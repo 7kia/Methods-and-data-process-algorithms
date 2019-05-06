@@ -9,7 +9,7 @@ MyGraph::MyGraph(const size_t vertexAmount)
 	m_transitionMatrix = vector<vector<size_t>>(vertexAmount);
 	for (int i = 0; i < vertexAmount; i++)
 	{
-		m_transitionMatrix[i] = vector<size_t>(vertexAmount);
+		m_transitionMatrix[i] = vector<size_t>(vertexAmount, std::numeric_limits<size_t>::max());
 		m_transitionMatrix[i][i] = 0;
 	}
 }

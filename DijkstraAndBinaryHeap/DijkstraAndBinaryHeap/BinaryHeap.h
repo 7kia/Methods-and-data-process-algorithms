@@ -6,7 +6,6 @@
 std::string printAsHeap(std::vector<int> heapContent);
 std::string printAsArray(std::vector<int> heapContent);
 
-
 template<class ElemType>
 class BinaryHeap
 {
@@ -39,10 +38,10 @@ public:
 		size_t right;
 		size_t i = index;
 		size_t j;
-		while (2 * i + 1 < heapContent.size())  // heapSize Ч количество элементов в куче
+		while ((2 * i + 1) < heapContent.size())
 		{
-			left = 2 * i + 1;             // left Ч левый сын
-			right = 2 * i + 2;            // right Ч правый сын
+			left = 2 * i + 1;
+			right = 2 * i + 2;
 			j = left;
 			if ((right < heapContent.size()) && (heapContent[right] < heapContent[left]))
 			{
@@ -66,29 +65,18 @@ public:
 		return min;
 	}
 
-	void replaceElement(const size_t index, const ElemType value) {
-		const ElemType oldValue = heapContent[index];
-		heapContent[index] = value;
-		int heapElementIndex = static_cast<int>(index - 1) / 2;
-		if (heapElementIndex < 0) {
-			heapElementIndex = 0;
-		}
-		if (oldValue < value) {
-			siftDown(index);//+
-		}
-		else {
-			siftUp(index);
-		}
-	}
 };
 
-struct NumberAndHeapIndex
+
+struct VertexDistance
 {
-	size_t nodeNumber;
-	size_t heapIndex;
+	VertexDistance(const size_t index, const size_t distance)
+	{
+		this->index = index;
+		this->distance = distance;
+	}
+	size_t index;
+	size_t distance;
 };
-class MinDistanceHeap: public BinaryHeap<VertexDistance>
-{
-public:// TODO
-	vector<NumberAndHeapIndex> numberToIndex;
-};
+bool operator<(const VertexDistance& first, const VertexDistance& second);
+bool operator<=(const VertexDistance& first, const VertexDistance& second);

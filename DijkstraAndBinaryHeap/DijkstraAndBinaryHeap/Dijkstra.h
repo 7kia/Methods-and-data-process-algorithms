@@ -48,23 +48,11 @@ struct DataForPath
 	size_t to;
 };
 
-struct VertexDistance
-{
-	VertexDistance(const size_t index, const size_t distance)
-	{
-		this->index = index;
-		this->distance = distance;
-	}
-	size_t index;
-	size_t distance;
-};
-bool operator<(const VertexDistance& first, const VertexDistance& second);
-bool operator<=(const VertexDistance& first, const VertexDistance& second);
+
 
 class Dijkstra 
 {
 public:
-	Dijkstra();
 	std::string findMinPath(const std::string& inputFileName);	
 	std::string findMinPath(const size_t from, const size_t to, const MyGraph graph);
 	static DataForPath recoveryPath(
@@ -81,11 +69,7 @@ private:
 		const size_t roadAmount
 	);
 	void convertToArrayIndex(size_t& number);
-	void updateMinDistanceForVertexes(const size_t size, size_t & min, size_t & minIndex);
 	void initVertexesAndDistances(const size_t from, const size_t size);
-	void findMinDistanceFromVertex(size_t & min, size_t & minIndex, const MyGraph graph);
 private:
-	BinaryHeap<VertexDistance> m_minDistance;//
-	std::vector<bool> m_markedVertexes;
-	//BinaryHeap<VertexDistance> m_heap;
+	std::vector<size_t> m_minDistance;
 };

@@ -5,10 +5,6 @@
 #include <exception>
 using namespace std;
 
-Dijkstra::Dijkstra()
-{
-}
-
 std::string Dijkstra::findMinPath(const std::string& inputFileName)
 {	
 	try
@@ -87,93 +83,55 @@ string Dijkstra::findMinPath(
 	const MyGraph graph
 )
 {
-	const size_t size = graph.m_transitionMatrix.size();
-	m_markedVertexes = vector<bool>(size);
-	
+	const size_t size = graph.m_transitionMatrix.size();	
 	initVertexesAndDistances(from, size);
 
-	size_t minIndex;
-	size_t min;
-	do 
-	{
-		minIndex = numeric_limits<size_t>::max();;
-		min = numeric_limits<size_t>::max();;
+	BinaryHeap<VertexDistance> heap;
+	heap.addElement(VertexDistance(from, 0));
 
-		updateMinDistanceForVertexes(size, min, minIndex);
-		if (minIndex != numeric_limits<size_t>::max())
+	while (!heap.heapContent.empty()) 
+	{
+		VertexDistance vertex = heap.getAndDeleteMin();
+		size_t index = vertex.index;
+		size_t currendDistance = vertex.distance;
+
+		bool skipFictitiousPosition = (currendDistance > m_minDistance[index]);
+		if (skipFictitiousPosition)
 		{
-			findMinDistanceFromVertex(min, minIndex, graph);
-			m_markedVertexes[minIndex] = true;
+			continue;
 		}
-	} 
-	while (minIndex < numeric_limits<size_t>::max());
+
+		for (size_t j = 0; j < graph.m_transitionMatrix[index].size(); ++j) 
+		{
+			size_t to = j;
+			size_t length = graph.m_transitionMatrix[index][j];
+			bool existPath = (length != std::numeric_limits<size_t>::max());
+			if (!existPath)
+			{
+				continue;
+			}
+
+			if ((m_minDistance[index] + length) < m_minDistance[to]) {
+				m_minDistance[to] = m_minDistance[index] + length;
+				heap.addElement(VertexDistance(to, m_minDistance[to]));
+			}
+		}
+	}
 
 	DataForPath data = recoveryPath(graph, m_minDistance, from, to);
 	return graph.printPath(data);
 }
 
-
-void Dijkstra::updateMinDistanceForVertexes(const size_t size, size_t& min, size_t& minIndex)
-{
-	BinaryHeap<VertexDistance> heap = BinaryHeap<VertexDistance>();
-
-	bool isChange = false;
-	for (int i = 0; i < size; i++)
-	{//&& (heap.heapContent[i].distance != m_minDistance[i])
-		if (!m_markedVertexes[i] )
-		{
-			heap.addElement(VertexDistance(i, m_minDistance[i]));
-			bool isChange = true;
-		}
-	}//isChange && (m_minDistance[1] < numeric_limits<size_t>::max())
-	
-	if (heap.heapContent.size() > 0) {
-		VertexDistance minVertex = heap.getAndDeleteMin();
-		min = minVertex.distance;
-		minIndex = minVertex.index;
-	}
-}
-
 void Dijkstra::initVertexesAndDistances(const size_t from, const size_t size)
 {
+	m_minDistance = vector<size_t>(size);
 	for (size_t index = 0; index < size; ++index)
 	{
-		if (index == from) {
-			m_minDistance.addElement(VertexDistance(from, 0));
-		}
-		else
-		{
-			m_minDistance.addElement(VertexDistance(index, numeric_limits<size_t>::max()));
-		}
-		m_markedVertexes[index] = false;
+		m_minDistance[index] = numeric_limits<size_t>::max();
 	}
+	m_minDistance[from] = 0;
 }
 
-
-void Dijkstra::findMinDistanceFromVertex(size_t& min, size_t& minIndex, const MyGraph graph)
-{
-	const size_t size = graph.m_transitionMatrix.size();
-
-	vector<size_t> oldDistance = extractDistance(m_minDistance);
-	vector<size_t> currentDistance = vector<size_t>(oldDistance);
-	//vector<size_t>(m_minDistance.heapContent.size());
-	
-	for (int i = 0; i < size; i++)
-	{
-		if (graph.m_transitionMatrix[minIndex][i] > 0)
-		{
-			size_t temp = min + graph.m_transitionMatrix[minIndex][i];
-			if (temp < currentDistance[i])
-			{
-				currentDistance[i] = temp;
-			}
-		}
-		if (currentDistance[i] != oldDistance[i]) {
-			m_minDistance.replaceElement(i, currentDistance[i]);
-		}
-		// TODO: попробуй здесь заменять элементы кучи на новые
-	}
-}
 
 DataForPath Dijkstra::recoveryPath(
 	const MyGraph& graph, 
@@ -186,7 +144,7 @@ DataForPath Dijkstra::recoveryPath(
 
 	vector<size_t> visitedVertexes = vector<size_t>(size);
 	size_t endVertexIndex = to;
-	visitedVertexes[0] = endVertexIndex + 1; // индекс + 1 = номер вершины(отсчёт с 1)
+	visitedVertexes[0] = endVertexIndex + 1;// индекс + 1 = номер вершины(отсчёт с 1)
 	size_t previousVertexIndex = 1;
 	size_t endVertexWeight = minDistance[endVertexIndex];
 
@@ -218,12 +176,3 @@ DataForPath Dijkstra::recoveryPath(
 	);
 }
 
-bool operator<(const VertexDistance& first, const VertexDistance& second)
-{
-	return first.distance < second.distance;
-}
-
-bool operator<=(const VertexDistance& first, const VertexDistance& second)
-{
-	return first.distance <= second.distance;
-}
