@@ -6,12 +6,7 @@ using namespace std;
 
 MyGraph::MyGraph(const size_t vertexAmount)
 {
-	m_transitionMatrix = vector<vector<size_t>>(vertexAmount);
-	for (int i = 0; i < vertexAmount; i++)
-	{
-		m_transitionMatrix[i] = vector<size_t>(vertexAmount, std::numeric_limits<size_t>::max());
-		m_transitionMatrix[i][i] = 0;
-	}
+	m_transitions = vector<vector<VertexDistance>>(vertexAmount);
 }
 
 MyGraph::~MyGraph()
@@ -20,7 +15,7 @@ MyGraph::~MyGraph()
 
 void MyGraph::addPath(const size_t from, const size_t to, const size_t distance)
 {
-	m_transitionMatrix[to][from] = distance;
+	m_transitions[from].push_back(VertexDistance(to, distance));
 }
 
 void MyGraph::addBidirectionalPath(const size_t from, const size_t to, const size_t distance)
@@ -32,11 +27,13 @@ void MyGraph::addBidirectionalPath(const size_t from, const size_t to, const siz
 std::string MyGraph::print()
 {
 	string result;
-	for each (vector<size_t> row in m_transitionMatrix)
+	for (size_t index = 0; index < m_transitions.size(); ++index)
 	{
-		for each (size_t distance in row)
+		vector<VertexDistance> row = m_transitions[index];
+		result.append("From vertex \"" + std::to_string(index) + "\" : ");
+		for each (VertexDistance vertex in row)
 		{
-			result.append(std::to_string(distance) + " ");
+			result.append("to +\"" + std::to_string(vertex.index) + "\" distance = " + std::to_string(vertex.distance) + "; ");
 		}
 		result.append("\n");
 	}
@@ -62,4 +59,16 @@ std::string MyGraph::printPath(const DataForPath data) const
 
 	result.append("\nDistance = " + to_string(minDistance));
 	return result;
+}
+
+
+
+bool operator<(const VertexDistance& first, const VertexDistance& second)
+{
+	return first.distance < second.distance;
+}
+
+bool operator<=(const VertexDistance& first, const VertexDistance& second)
+{
+	return first.distance <= second.distance;
 }

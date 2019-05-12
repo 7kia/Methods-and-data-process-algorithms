@@ -80,10 +80,10 @@ void Dijkstra::convertToArrayIndex(size_t & number)
 string Dijkstra::findMinPath(
 	const size_t from, 
 	const size_t to,
-	const MyGraph graph
+	const MyGraph graph// TODO: списки смежности вместо матрицы переходов
 )
 {
-	const size_t size = graph.m_transitionMatrix.size();	
+	const size_t size = graph.m_transitions.size();	
 	initVertexesAndDistances(from, size);
 
 	BinaryHeap<VertexDistance> heap;
@@ -92,30 +92,31 @@ string Dijkstra::findMinPath(
 	while (!heap.heapContent.empty()) 
 	{
 		VertexDistance vertex = heap.getAndDeleteMin();
-		size_t index = vertex.index;
+		size_t from = vertex.index;
 		size_t currendDistance = vertex.distance;
 
-		bool skipFictitiousPosition = (currendDistance > m_minDistance[index]);
+		bool skipFictitiousPosition = (currendDistance > m_minDistance[from]);
 		if (skipFictitiousPosition)
 		{
 			continue;
 		}
 
-		for (size_t j = 0; j < graph.m_transitionMatrix[index].size(); ++j) 
+		for each (VertexDistance vertex in graph.m_transitions[from])
 		{
-			size_t to = j;
-			size_t length = graph.m_transitionMatrix[index][j];
-			bool existPath = (length != std::numeric_limits<size_t>::max());
-			if (!existPath)
-			{
-				continue;
-			}
+			size_t to = vertex.index;
+			size_t length = vertex.distance;
+			//bool existPath = (length != std::numeric_limits<size_t>::max());
+			//if (!existPath)
+			//{
+			//	continue;
+			//}
 
-			if ((m_minDistance[index] + length) < m_minDistance[to]) {
-				m_minDistance[to] = m_minDistance[index] + length;
+			if ((m_minDistance[from] + length) < m_minDistance[to]) {
+				m_minDistance[to] = m_minDistance[from] + length;
 				heap.addElement(VertexDistance(to, m_minDistance[to]));
 			}
 		}
+
 	}
 
 	DataForPath data = recoveryPath(graph, m_minDistance, from, to);
@@ -140,7 +141,7 @@ DataForPath Dijkstra::recoveryPath(
 	const size_t to
 )
 {
-	const size_t size = graph.m_transitionMatrix.size();
+	const size_t size = graph.m_transitions.size();
 
 	vector<size_t> visitedVertexes = vector<size_t>(size);
 	size_t endVertexIndex = to;
@@ -150,21 +151,19 @@ DataForPath Dijkstra::recoveryPath(
 
 	while (endVertexIndex != from)
 	{
-		for (int i = 0; i < size; i++) {
-			bool existTransition = graph.m_transitionMatrix[endVertexIndex][i] != 0;
-			if (existTransition)
+		for each (VertexDistance vertex in graph.m_transitions[endVertexIndex])
+		{	
+			size_t weightFromPreviousVertex = endVertexWeight - vertex.distance;
+			bool transitionFromTheVertex = (weightFromPreviousVertex == minDistance[vertex.index]);
+			if (transitionFromTheVertex)
 			{
-				size_t weightFromPreviousVertex = endVertexWeight - graph.m_transitionMatrix[endVertexIndex][i];
-				bool transitionFromTheVertex = (weightFromPreviousVertex == minDistance[i]);
-				if (transitionFromTheVertex) 
-				{
-					endVertexWeight = weightFromPreviousVertex;
-					endVertexIndex = i;
-					visitedVertexes[previousVertexIndex] = i + 1;
-					previousVertexIndex++;
-				}
+				endVertexWeight = weightFromPreviousVertex;
+				endVertexIndex = vertex.index;
+				visitedVertexes[previousVertexIndex] = vertex.index + 1;
+				previousVertexIndex++;
 			}
 		}
+
 	}
 
 	return DataForPath(

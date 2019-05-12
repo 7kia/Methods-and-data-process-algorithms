@@ -5,6 +5,19 @@
 
 struct DataForPath;
 
+struct VertexDistance
+{
+	VertexDistance(const size_t index, const size_t distance)
+	{
+		this->index = index;
+		this->distance = distance;
+	}
+	size_t index;
+	size_t distance;
+};
+bool operator<(const VertexDistance& first, const VertexDistance& second);
+bool operator<=(const VertexDistance& first, const VertexDistance& second);
+
 class MyGraph
 {
 public:
@@ -18,6 +31,5 @@ public:
 	std::string print();
 	std::string printPath(const DataForPath data) const;
 public:
-	std::vector<std::vector<size_t>> m_transitionMatrix;
+	std::vector<std::vector<VertexDistance>> m_transitions;
 };
-

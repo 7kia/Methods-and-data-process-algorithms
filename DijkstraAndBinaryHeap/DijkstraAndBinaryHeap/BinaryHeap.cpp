@@ -32,13 +32,3 @@ std::string printAsArray(std::vector<int> heapContent)
 	return result;
 }
 
-
-bool operator<(const VertexDistance& first, const VertexDistance& second)
-{
-	return first.distance < second.distance;
-}
-
-bool operator<=(const VertexDistance& first, const VertexDistance& second)
-{
-	return first.distance <= second.distance;
-}
