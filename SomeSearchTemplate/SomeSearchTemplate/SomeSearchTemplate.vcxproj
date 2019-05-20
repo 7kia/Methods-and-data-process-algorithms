@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AhoKorasikAlgorithm.h" />
+    <ClInclude Include="HashFunction.h" />
     <ClInclude Include="IStringTemplateSearcher.h" />
     <ClInclude Include="RabbiCarpAlgorithm.h" />
     <ClInclude Include="stdafx.h" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AhoKorasikAlgorithm.cpp" />
+    <ClCompile Include="HashFunction.cpp" />
     <ClCompile Include="RabbiCarpAlgorithm.cpp" />
     <ClCompile Include="SomeSearchTemplate.cpp" />
     <ClCompile Include="stdafx.cpp">

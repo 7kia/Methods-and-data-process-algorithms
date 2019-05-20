@@ -4,6 +4,6 @@
 class AhoKorasikAlgorithm : public IStringTemplateSearcher
 {
 public:
-	std::vector<FoundTemplate> foundTemplates(const TemplateSearchData data);
+	std::vector<std::vector<FoundPositions>> foundTemplates(const TemplateSearchData data);
 };
 

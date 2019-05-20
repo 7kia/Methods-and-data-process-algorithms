@@ -16,9 +16,10 @@ struct FoundTemplate
 	size_t stringNumber;
 	size_t position;
 };
+typedef std::vector<size_t> FoundPositions;
 
 class IStringTemplateSearcher
 {
 public:
-	virtual std::vector<FoundTemplate> foundTemplates(const TemplateSearchData data) = 0;
+	virtual std::vector<std::vector<FoundPositions>> foundTemplates(const TemplateSearchData data) = 0;
 };

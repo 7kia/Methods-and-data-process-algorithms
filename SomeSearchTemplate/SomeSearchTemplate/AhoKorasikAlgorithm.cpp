@@ -3,8 +3,8 @@
 
 using namespace std;
 
-vector<FoundTemplate> AhoKorasikAlgorithm::foundTemplates(const TemplateSearchData data)
+std::vector<std::vector<FoundPositions>> AhoKorasikAlgorithm::foundTemplates(const TemplateSearchData data)
 {
-	vector<FoundTemplate> foundTemplates = vector<FoundTemplate>();
+	std::vector<std::vector<FoundPositions>> foundTemplates = std::vector<std::vector<FoundPositions>>();
 	return foundTemplates;
 }

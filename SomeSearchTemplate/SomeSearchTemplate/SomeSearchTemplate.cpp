@@ -8,6 +8,7 @@
 #include <fstream>
 #include <ctime>
 #include <cstdio>
+#include <sstream>
 
 #include "DataExtractor.h"
 #include "AhoKorasikAlgorithm.h"
@@ -57,14 +58,55 @@ void compareFiles(const string firstFileName, const string secondFileName)
 	}
 	else {
 		if (!firstIsOpen) {
-			cout << "\"" << firstFileName << "\" Error opening file!" << endl;
+			throw new std::exception((std::string("\"" + firstFileName + "\" not opened").c_str()));
 		}
 		if(!secondIsOpen)
 		{
-			cout << "\"" << secondFileName << "\" Error opening file!" << endl;
-		}		
+			throw new std::exception((std::string("\"" + secondFileName + "\" not opened").c_str()));
+		}
 	}
 		
+}
+
+void recordResult(
+	const std::vector<std::vector<FoundPositions>>& result, 
+	const string outputFileName,
+	const vector<string> templates
+) {
+	fstream outputFile(outputFileName);
+
+	bool isOpen = outputFile.is_open();
+
+	if (isOpen)
+	{
+		size_t stringCount = 1;
+		std::stringstream stream;
+
+		for (size_t stringCount = 0; stringCount < result.size(); ++stringCount)
+		{
+			stream.clear();
+
+			const vector<FoundPositions>& lineResult = result[stringCount];
+			for (size_t i = 0; i < lineResult.size(); ++i)
+			{
+				const FoundPositions& templatePositions = lineResult[i];
+
+				for (size_t tempIndex = 0; tempIndex < lineResult.size(); ++tempIndex)
+				{
+					const size_t position = templatePositions[tempIndex];
+					stream << "Line " << stringCount << ": position " << position << ": " << templates[tempIndex] << "\n";
+					outputFile << stream;// TODO: 
+				}
+
+
+			}
+
+		}
+	}
+	else
+	{			
+		throw new std::exception((std::string("\"" + outputFileName + "\" not opened").c_str()));
+	}
 }
 
 void testAlgorithms(const string inputFileName, const string outputFileName)
@@ -73,18 +115,26 @@ void testAlgorithms(const string inputFileName, const string outputFileName)
 	TemplateSearchData data = dataExtractor.extractData(inputFileName + ".txt");
 	
 	auto func = [=](IStringTemplateSearcher& algorithm, const string algorithmName) {
-		cout << "Work " << algorithmName << "; File \"" << inputFileName << "\"" << endl;
+		try
+		{
+			cout << "Work " << algorithmName << "; File \"" << inputFileName << "\"" << endl;
 
-		std::clock_t start;
-		double duration;
-		start = std::clock();
+			std::clock_t start;
+			double duration;
+			start = std::clock();
 
-		algorithm.foundTemplates(data);
+			std::vector<std::vector<FoundPositions>> result = algorithm.foundTemplates(data);
 
-		duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
-		std::cout << "time=" << duration << '\n';
+			duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+			std::cout << "time=" << duration << '\n';
 
-		compareFiles(data.fileName, outputFileName + "_" + algorithmName + ".txt");
+
+			compareFiles(data.fileName, outputFileName + "_" + algorithmName + ".txt");
+		}
+		catch (const std::exception& e)
+		{
+			cout << e.what() << endl;
+		}
 	};
 
 	func(RabbiCarpAlgorithm(), "Rabbi-Carp");
