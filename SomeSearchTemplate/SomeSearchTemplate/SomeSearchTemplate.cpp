@@ -68,6 +68,38 @@ void compareFiles(const string firstFileName, const string secondFileName)
 		
 }
 
+
+void recordStrings(
+	const std::vector<std::vector<FoundPositions>>& result,
+	const vector<string> templates,
+	fstream& outputFile
+) {
+
+	for (size_t stringCount = 0; stringCount < result.size(); ++stringCount)
+	{
+		
+
+		const vector<FoundPositions>& lineResult = result[stringCount];
+		for (size_t i = 0; i < lineResult.size(); ++i)
+		{
+			const FoundPositions& templatePositions = lineResult[i];
+
+			for (size_t tempIndex = 0; tempIndex < templatePositions.size(); ++tempIndex)
+			{
+				std::stringstream stream;
+
+				const size_t position = templatePositions[tempIndex];
+				stream << "Line " << stringCount + 1 << ": position " << position + 1 << ": " << templates[i] << "\n";
+				outputFile << stream.str();// TODO: 
+			}
+
+
+		}
+
+	}
+}
+
+
 void recordResult(
 	const std::vector<std::vector<FoundPositions>>& result, 
 	const string outputFileName,
@@ -79,35 +111,14 @@ void recordResult(
 
 	if (isOpen)
 	{
-		size_t stringCount = 1;
-		std::stringstream stream;
-
-		for (size_t stringCount = 0; stringCount < result.size(); ++stringCount)
-		{
-			stream.clear();
-
-			const vector<FoundPositions>& lineResult = result[stringCount];
-			for (size_t i = 0; i < lineResult.size(); ++i)
-			{
-				const FoundPositions& templatePositions = lineResult[i];
-
-				for (size_t tempIndex = 0; tempIndex < lineResult.size(); ++tempIndex)
-				{
-					const size_t position = templatePositions[tempIndex];
-					stream << "Line " << stringCount << ": position " << position << ": " << templates[tempIndex] << "\n";
-					outputFile << stream;// TODO: 
-				}
-
-
-			}
-
-		}
+		recordStrings(result, templates, outputFile);
 	}
 	else
 	{			
 		throw new std::exception((std::string("\"" + outputFileName + "\" not opened").c_str()));
 	}
 }
+
 
 void testAlgorithms(const string inputFileName, const string outputFileName)
 {
@@ -123,13 +134,15 @@ void testAlgorithms(const string inputFileName, const string outputFileName)
 			double duration;
 			start = std::clock();
 
-			std::vector<std::vector<FoundPositions>> result = algorithm.foundTemplates(data);
+			const std::vector<std::vector<FoundPositions>> result = algorithm.foundTemplates(data);
 
 			duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 			std::cout << "time=" << duration << '\n';
 
+			const string fileName = outputFileName + "_" + algorithmName + ".txt";
+			recordResult(result, fileName, data.templates);
 
-			compareFiles(data.fileName, outputFileName + "_" + algorithmName + ".txt");
+			compareFiles(data.fileName, fileName);
 		}
 		catch (const std::exception& e)
 		{
@@ -143,6 +156,7 @@ void testAlgorithms(const string inputFileName, const string outputFileName)
 
 int main()
 {
+	setlocale(LC_ALL, "Russian");
 	testAlgorithms("input", "output");
 
 	// Test compareFiles()
