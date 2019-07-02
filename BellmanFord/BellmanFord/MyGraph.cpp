@@ -15,6 +15,7 @@ MyGraph::~MyGraph()
 void MyGraph::addPath(const size_t from, const size_t to, const size_t distance)
 {
 	m_transitions[from].push_back(VertexDistance(to, distance));
+	++arcCount;
 }
 
 void MyGraph::addBidirectionalPath(const size_t from, const size_t to, const size_t distance)
@@ -37,6 +38,26 @@ std::string MyGraph::print()
 		result.append("\n");
 	}
 	result.append("\n");
+	return result;
+}
+
+std::vector<Edge> MyGraph::getEdges() const
+{
+	std::vector<Edge> result = std::vector<Edge>();
+	for (size_t i = 0; i < m_transitions.size(); ++i)
+	{
+		const std::vector<VertexDistance>& transitions = m_transitions[i];
+		for (size_t j = 0; j < transitions.size(); ++j)
+		{
+			result.push_back(
+				Edge(
+					i,
+					transitions[j].index,
+					transitions[j].distance
+				)
+			);
+		}
+	}
 	return result;
 }
 

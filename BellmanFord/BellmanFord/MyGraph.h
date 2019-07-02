@@ -15,6 +15,25 @@ struct VertexDistance
 	size_t index;
 	size_t distance;
 };
+struct Edge {
+	size_t from = 0;
+	size_t to = 0;
+	int length = 0;
+
+	Edge() {};
+
+	Edge(
+		const size_t from,
+		const size_t to,
+		const int length
+	)
+	{
+		this->from = from;
+		this->to = to;
+		this->length = length;
+	}
+};
+
 bool operator<(const VertexDistance& first, const VertexDistance& second);
 bool operator<=(const VertexDistance& first, const VertexDistance& second);
 
@@ -29,7 +48,8 @@ public:
 	// Warning: vertex number(from, to) start on 1
 	void addBidirectionalPath(const size_t from, const size_t to, const size_t disatance);
 	std::string print();
-	std::string printPath(const DataForPath data) const;
+	std::vector<Edge> getEdges() const;
 public:
 	std::vector<std::vector<VertexDistance>> m_transitions;
+	size_t arcCount = 0;
 };

@@ -124,7 +124,7 @@ void recordString(const MaxPathData& data, fstream& outputFile, const bool beaut
 }
 
 void recordResult(
-	const vector<MaxPathData>& result,
+	const BellmanFordAlgorithm::MaxVertexPath& result,
 	const string outputFileName,
 	const bool beautifulOutput
 ) {
@@ -170,11 +170,11 @@ void testAlgorithms(
 	{
 		cout << "File \"" << inputFileName << "\"" << endl;
 
-		vector<MaxPathData> result;
+		BellmanFordAlgorithm::MaxVertexPath result;
 		executeAndMeasureTime([&]()
 		{
 			BellmanFordAlgorithm algorithm = BellmanFordAlgorithm();
-			result = algorithm.getMaxPaths(data.graph);
+			result = algorithm.getMaxPaths(data.graph, data.startVertex);
 		});
 
 		recordResult(result, outputFileName + ".txt", beautifulOutput);
