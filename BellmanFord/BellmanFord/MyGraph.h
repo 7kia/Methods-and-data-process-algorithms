@@ -33,6 +33,24 @@ struct Edge {
 		this->length = length;
 	}
 };
+struct MaxPathData : public Edge
+{
+	std::vector<int> path;
+	MaxPathData() {};
+
+	MaxPathData(
+		const size_t from,
+		const size_t to,
+		const int length,
+		const std::vector<int>& path
+	)
+	{
+		this->from = from;
+		this->to = to;
+		this->length = length;
+		this->path = path;
+	}
+};
 
 bool operator<(const VertexDistance& first, const VertexDistance& second);
 bool operator<=(const VertexDistance& first, const VertexDistance& second);

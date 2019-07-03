@@ -5,6 +5,7 @@
 
 #include "DataExtractor.h"
 #include "BellmanFordAlgorithm.h"
+#include "MaxPathPrinter.h"
 
 #include <string>
 #include <locale>
@@ -119,12 +120,12 @@ void recordbeautifulString(const MaxPathData& data, fstream& outputFile)
 
 void recordString(const MaxPathData& data, fstream& outputFile, const bool beautifulOutput)
 {
-	BellmanFordAlgorithm algorithm = BellmanFordAlgorithm();
-	outputFile << algorithm.printPath(data, beautifulOutput);
+	MaxPathPrinter printer = MaxPathPrinter();
+	outputFile << printer.printPath(data, beautifulOutput);
 }
 
 void recordResult(
-	const BellmanFordAlgorithm::MaxVertexPath& result,
+	const std::vector<MaxPathData>& result,
 	const string outputFileName,
 	const bool beautifulOutput
 ) {
@@ -170,7 +171,7 @@ void testAlgorithms(
 	{
 		cout << "File \"" << inputFileName << "\"" << endl;
 
-		BellmanFordAlgorithm::MaxVertexPath result;
+		BellmanFordAlgorithm::MaxPaths result;
 		executeAndMeasureTime([&]()
 		{
 			BellmanFordAlgorithm algorithm = BellmanFordAlgorithm();
