@@ -9,7 +9,7 @@ std::string MaxPathPrinter::printPath(const MaxPathData& data, const bool beauti
 	}
 	else
 	{
-		if (data.length)
+		if (data.length > 0)
 		{
 			result << data.length << " " << data.path.size() << " ";
 			addPath(data.path, result, " ");
@@ -25,18 +25,24 @@ std::string MaxPathPrinter::printPath(const MaxPathData& data, const bool beauti
 
 void MaxPathPrinter::setBeautifulOutput(const MaxPathData & data, std::stringstream & result) const
 {
-	if (data.length)
+	if (data.length > 0)
 	{
-		result << data.from + 1 << " to " << data.to + 1 << ";";
-		result << "Length = " << data.length << "Vertex amount =" << data.path.size() << "\n";
+		result << convertFromIndexToNaturalNumber(data.from) << " to " << convertFromIndexToNaturalNumber(data.to) << ";";
+		result << "Length = " << data.length << "; Vertex amount =" << data.path.size() << "\n";
 
 		result << "Path: ";
 		addPath(data.path, result, " => ");
 	}
 	else
 	{
-		result << "Path from " << data.from << " to " << data.to << " not exist";
+		result << "Path from " << convertFromIndexToNaturalNumber(data.from)
+			<< " to " << convertFromIndexToNaturalNumber(data.to) << " not exist";
 	}
+}
+
+size_t MaxPathPrinter::convertFromIndexToNaturalNumber(const size_t index) const
+{
+	return index + 1;
 }
 
 void MaxPathPrinter::addPath(

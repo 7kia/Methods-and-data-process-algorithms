@@ -39,6 +39,7 @@ private:
 		const size_t to,
 		const std::vector<int>& previousVertex
 	);
+	static int convertFromIndexToNaturalNumber(const int index);
 
 
 };

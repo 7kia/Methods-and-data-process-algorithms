@@ -1,0 +1,7 @@
+Path from 0 to 0 not exist
+1 to 2;Length = 1; Vertex amount =2
+Path: 1 => 2
+1 to 3;Length = 5; Vertex amount =4
+Path: 1 => 2 => 4 => 3
+1 to 4;Length = 4; Vertex amount =3
+Path: 1 => 2 => 4

@@ -179,7 +179,7 @@ void testAlgorithms(
 		});
 
 		recordResult(result, outputFileName + ".txt", beautifulOutput);
-		compareFiles(inputFileName + ".txt", outputFileName + ".txt", logging);
+		compareFiles(outputFileName + ".txt", outputFileName + "_r.txt", logging);
 	}
 	catch (const std::exception& e)
 	{

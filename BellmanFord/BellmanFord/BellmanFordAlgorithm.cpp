@@ -27,14 +27,14 @@ BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::getMaxPaths(const MyGraph &
 			previousVertex,
 			startNegativeCycle
 		);
-		printToConsoleNegativeCycles(
-			startNegativeCycle,
-			previousVertex,
-			startVertex,
-			vertexAmount
-		);
-	}
 
+	}
+	printToConsoleNegativeCycles(
+		startNegativeCycle,
+		previousVertex,
+		startVertex,
+		vertexAmount
+	);
 
 
 	return generateMaxPathData(maxPathWithPathLength, previousVertex, startVertex);
@@ -58,7 +58,7 @@ void BellmanFordAlgorithm::handleArcs(
 			maxPathWithPathLength[currentEdge.to] = max(
 				std::numeric_limits<int>::min(),
 				newLength
-			);
+			);	
 			previousVertex[currentEdge.to] = static_cast<int>(currentEdge.from);
 			startNegativeCycle = static_cast<int>(currentEdge.to);
 		}
@@ -91,7 +91,7 @@ void BellmanFordAlgorithm::printToConsoleNegativeCycles(
 		reverse(path.begin(), path.end());
 
 		const int cycleVertexIndex = path[1];
-		previousVertex[cycleVertexIndex] = std::numeric_limits<int>::max();
+		previousVertex[cycleVertexIndex] = NOT_VERTEX;
 
 		cout << "Negative cycle: ";
 		for (size_t i = 0; i < path.size(); ++i)
@@ -140,22 +140,25 @@ vector<int> BellmanFordAlgorithm::generatePath(
 {
 	vector<int> path;
 	for (int cur = static_cast<int>(to); ; cur = previousVertex[cur]) {
-		if (cur == std::numeric_limits<int>::max()) {
+		if (cur == NOT_VERTEX) {
 			return vector<int>();
 		}
 		if (path.size() >= previousVertex.size()) {
 			break;
 		}
-		/*if (std::find(path.begin(), path.end(), cur) != path.end()) {
-			return vector<int>();
-		}*/
-		path.push_back(cur);
+
+		path.push_back(convertFromIndexToNaturalNumber(cur));
 		const bool isEnd = (cur == from);
 		if (isEnd && (path.size() > 1)) {
 			break;
 		}
 	}
-
+	reverse(path.begin(), path.end());
 	return path;
+}
+
+int BellmanFordAlgorithm::convertFromIndexToNaturalNumber(const int index)
+{
+	return index + 1;
 }
 

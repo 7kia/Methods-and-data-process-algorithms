@@ -11,6 +11,7 @@ public:
 	std::string printPath(const MaxPathData& data, const bool beautifulOutput) const;
 private:
 	void setBeautifulOutput(const MaxPathData& data, std::stringstream & result) const;
+	size_t convertFromIndexToNaturalNumber(const size_t index) const;
 	void addPath(
 		const std::vector<int>& path,
 		std::stringstream & result,

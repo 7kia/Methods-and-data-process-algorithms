@@ -50,7 +50,7 @@ MyGraph DataExtractor::extractGraphFrom(
 		convertToArrayIndex(from);
 		convertToArrayIndex(to);
 
-		graph.addBidirectionalPath(from, to, distance);
+		graph.addPath(from, to, distance);
 	}
 	return graph;
 }
