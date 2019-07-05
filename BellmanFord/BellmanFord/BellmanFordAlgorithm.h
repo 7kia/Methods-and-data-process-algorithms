@@ -4,7 +4,8 @@
 #include <vector>
 #include <string>
 
-
+#include <ctime>
+#include <functional>
 
 
 class BellmanFordAlgorithm
@@ -21,7 +22,8 @@ private:
 		const std::vector<Edge>& edges,
 		const size_t arcAmount,
 		std::vector<int>& previousVertex,
-		int& startNegativeCycle
+		int& startNegativeCycle,
+		bool& isAnyWeightUpdated
 	);
 	static void printToConsoleNegativeCycles(
 		const size_t startNegativeCycle,

@@ -9,7 +9,7 @@ using namespace std;
 
 BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::getMaxPaths(const MyGraph & graph, const size_t startVertex)
 {
-	std::vector<Edge> edges = graph.getEdges();
+	std::vector<Edge> edges = graph.getEdgeList();
 	size_t vertexAmount = graph.m_transitions.size();
 	size_t arcAmount = graph.arcCount;
 
@@ -20,14 +20,19 @@ BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::getMaxPaths(const MyGraph &
 	int startNegativeCycle;
 	for (int vertexIndex = 0; vertexIndex < vertexAmount; ++vertexIndex) {
 		startNegativeCycle = -1;
+		bool isAnyWeightUpdated = false;
 		handleArcs(
 			maxPathWithPathLength,
 			edges,
 			arcAmount,
 			previousVertex,
-			startNegativeCycle
+			startNegativeCycle,
+			isAnyWeightUpdated
 		);
-
+		if (!isAnyWeightUpdated)
+		{
+			break;
+		}
 	}
 	//printToConsoleNegativeCycles(
 	//	startNegativeCycle,
@@ -40,12 +45,14 @@ BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::getMaxPaths(const MyGraph &
 	return generateMaxPathData(maxPathWithPathLength, previousVertex, startVertex);
 }
 
+
 void BellmanFordAlgorithm::handleArcs(
 	vector<int>& maxPathWithPathLength,
 	const vector<Edge>& edges,
 	const size_t arcAmount,
 	vector<int>& previousVertex,
-	int& startNegativeCycle
+	int& startNegativeCycle,
+	bool& isAnyWeightUpdated
 )
 {
 	for (int arcCount = 0; arcCount < arcAmount; ++arcCount) {
@@ -61,7 +68,9 @@ void BellmanFordAlgorithm::handleArcs(
 				newLength
 			);	*/
 			previousVertex[currentEdge.to] = static_cast<int>(currentEdge.from);
+			isAnyWeightUpdated = true;
 			//startNegativeCycle = static_cast<int>(currentEdge.to);
+
 		}
 	}
 }

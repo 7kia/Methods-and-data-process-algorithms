@@ -133,7 +133,7 @@ void testAlgorithms(
 	try
 	{
 		DataExtractor dataExtractor = DataExtractor();
-		GraphData data = dataExtractor.extractDataFrom(inputFileName + ".txt");
+		const GraphData data = dataExtractor.extractDataFrom(inputFileName + ".txt");
 
 
 
@@ -163,7 +163,7 @@ int main()
 	//testAlgorithms("input1", "output1", true, true);
 	//testAlgorithms("input2", "output2", true, true);
 	//testAlgorithms("input3", "output3", true, true);
-	//testAlgorithms("input4", "output4", true, true);
+	testAlgorithms("input4", "output4", true, true);
 	testAlgorithms("input5", "output5", false, true);//0.354
 	testAlgorithms("input6", "output6", false, true);//3.905
 	testAlgorithms("input9", "output9", false, true);//6.918 vs 4

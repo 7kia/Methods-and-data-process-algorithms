@@ -66,7 +66,8 @@ public:
 	// Warning: vertex number(from, to) start on 1
 	void addBidirectionalPath(const size_t from, const size_t to, const size_t disatance);
 	std::string print();
-	std::vector<Edge> getEdges() const;
+	std::vector<Edge> getEdgeList() const;
+	std::vector<std::vector<Edge>> getEdges() const;
 public:
 	std::vector<std::vector<VertexDistance>> m_transitions;
 	size_t arcCount = 0;

@@ -41,7 +41,7 @@ std::string MyGraph::print()
 	return result;
 }
 
-std::vector<Edge> MyGraph::getEdges() const
+std::vector<Edge> MyGraph::getEdgeList() const
 {
 	std::vector<Edge> result = std::vector<Edge>();
 	for (size_t i = 0; i < m_transitions.size(); ++i)
@@ -50,6 +50,26 @@ std::vector<Edge> MyGraph::getEdges() const
 		for (size_t j = 0; j < transitions.size(); ++j)
 		{
 			result.push_back(
+				Edge(
+					i,
+					transitions[j].index,
+					transitions[j].distance
+				)
+			);
+		}
+	}
+	return result;
+}
+
+std::vector<std::vector<Edge>> MyGraph::getEdges() const
+{
+	std::vector<std::vector<Edge>> result = std::vector<std::vector<Edge>>(m_transitions.size());
+	for (size_t i = 0; i < m_transitions.size(); ++i)
+	{
+		const std::vector<VertexDistance>& transitions = m_transitions[i];
+		for (size_t j = 0; j < transitions.size(); ++j)
+		{
+			result[i].push_back(
 				Edge(
 					i,
 					transitions[j].index,
