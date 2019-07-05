@@ -29,12 +29,12 @@ BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::getMaxPaths(const MyGraph &
 		);
 
 	}
-	printToConsoleNegativeCycles(
-		startNegativeCycle,
-		previousVertex,
-		startVertex,
-		vertexAmount
-	);
+	//printToConsoleNegativeCycles(
+	//	startNegativeCycle,
+	//	previousVertex,
+	//	startVertex,
+	//	vertexAmount
+	//);
 
 
 	return generateMaxPathData(maxPathWithPathLength, previousVertex, startVertex);
@@ -55,12 +55,13 @@ void BellmanFordAlgorithm::handleArcs(
 		const int newLength = maxPathWithPathLength[currentEdge.from] + currentEdge.length;
 		const bool pathLonger = maxPathWithPathLength[currentEdge.to] < newLength;
 		if (pathExist && pathLonger) {
-			maxPathWithPathLength[currentEdge.to] = max(
+			maxPathWithPathLength[currentEdge.to] = newLength;
+				/*max(
 				std::numeric_limits<int>::min(),
 				newLength
-			);	
+			);	*/
 			previousVertex[currentEdge.to] = static_cast<int>(currentEdge.from);
-			startNegativeCycle = static_cast<int>(currentEdge.to);
+			//startNegativeCycle = static_cast<int>(currentEdge.to);
 		}
 	}
 }
@@ -102,6 +103,11 @@ void BellmanFordAlgorithm::printToConsoleNegativeCycles(
 	}
 }
 
+static bool compare(MaxPathData a, MaxPathData b)
+{
+	return a.length < b.length;
+}
+
 BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::generateMaxPathData(
 	const std::vector<int>& maxPathWithPathLength,
 	const std::vector<int>& previousVertex,
@@ -123,12 +129,17 @@ BellmanFordAlgorithm::MaxPaths BellmanFordAlgorithm::generateMaxPathData(
 					startVertex,
 					vertexIndex, 
 					maxPathWithPathLength[vertexIndex],
-					generatePath(startVertex, vertexIndex, previousVertex)
+					vector<int>()//generatePath(startVertex, vertexIndex, previousVertex)
 				)
 			);
 		}
 	}
-
+	result = std::vector<MaxPathData>(
+		1,
+		*std::max_element(result.begin(), result.end(), compare)
+	);
+	MaxPathData& maxPath = result[0];
+	maxPath.path = generatePath(startVertex, maxPath.to, previousVertex);
 	return result;
 }
 
