@@ -72,40 +72,6 @@ void compareFiles(const string firstFileName, const string secondFileName, const
 
 }
 
-
-void recordStrings(
-	fstream& outputFile
-) {
-
-	//for (size_t stringCount = 0; stringCount < result.size(); ++stringCount)
-	//{
-
-
-	//	const vector<FoundPositions>& lineResult = result[stringCount];
-	//	for (size_t i = 0; i < lineResult.size(); ++i)
-	//	{
-	//		const FoundPositions& templatePositions = lineResult[i];
-
-	//		for (size_t tempIndex = 0; tempIndex < templatePositions.size(); ++tempIndex)
-	//		{
-	//			std::stringstream stream;
-
-	//			const size_t position = templatePositions[tempIndex];
-	//			stream << "Line " << stringCount + 1 << ": position " << position + 1 << ": " << templates[i] << "\n";
-	//			outputFile << stream.str();// TODO: 
-	//		}
-
-
-	//	}
-
-	//}
-}
-
-void foo()
-{
-	throw new exception("1");
-}
-
 void recordbeautifulString(const MaxPathData& data, fstream& outputFile)
 {
 	if (data.length)
@@ -164,11 +130,13 @@ void testAlgorithms(
 	const bool beautifulOutput
 )
 {
-	DataExtractor dataExtractor = DataExtractor();
-	GraphData data = dataExtractor.extractDataFrom(inputFileName + ".txt");
-
 	try
 	{
+		DataExtractor dataExtractor = DataExtractor();
+		GraphData data = dataExtractor.extractDataFrom(inputFileName + ".txt");
+
+
+
 		cout << "File \"" << inputFileName << "\"" << endl;
 
 		BellmanFordAlgorithm::MaxPaths result;
@@ -179,7 +147,7 @@ void testAlgorithms(
 		});
 
 		recordResult(result, outputFileName + ".txt", beautifulOutput);
-		compareFiles(outputFileName + ".txt", outputFileName + "_r.txt", logging);
+		//compareFiles(outputFileName + ".txt", outputFileName + "_r.txt", logging);
 	}
 	catch (const std::exception& e)
 	{
@@ -191,8 +159,18 @@ void testAlgorithms(
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	testAlgorithms("input1", "output1", true, true);
-	testAlgorithms("input2", "output2", true, true);
+
+	//testAlgorithms("input1", "output1", true, true);
+	//testAlgorithms("input2", "output2", true, true);
+	//testAlgorithms("input3", "output3", true, true);
+	//testAlgorithms("input4", "output4", true, true);
+	testAlgorithms("input5", "output5", false, true);//0.354
+	testAlgorithms("input6", "output6", false, true);//3.905
+	testAlgorithms("input9", "output9", false, true);//6.918 vs 4
+	testAlgorithms("input13", "output13", false, true);//25.914 vs 14
+
+	//testAlgorithms("input12", "output12", true, true);
+	//testAlgorithms("input13", "output13", true, true);
 	// testAlgorithms("input2", "output2", false);
 	// Test compareFiles()
 	//compareFiles("output_r.txt", "output__r.txt");
